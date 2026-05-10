@@ -1,0 +1,24 @@
+# Environment - never commit these
+.env
+*.env.local
+.env.production
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+
+# Node
+node_modules/
+frontend/dist/
+
+# Uploads
+backend/uploads/
+
+# IDE / OS
+.DS_Store
+.idea/
+.vscode/
+*.log
