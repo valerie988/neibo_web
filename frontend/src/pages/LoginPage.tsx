@@ -59,7 +59,7 @@ export default function LoginPage() {
                     : "text-gray-400 hover:text-green-700"
                 }`}
               >
-                {r === "farmer" ? "🌱 Farmer" : "🛍️ Customer"}
+                {r === "farmer" ? "🌱 Farmer" : "Customer"}
               </button>
             ))}
           </div>
