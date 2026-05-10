@@ -1,4 +1,4 @@
-# 🌱 AgriMarket
+# NeBo
 
 Farm-fresh marketplace connecting farmers and customers.
 
@@ -19,7 +19,7 @@ docker compose up --build
 ```
 
 | Service  | URL                            |
-|----------|--------------------------------|
+| -------- | ------------------------------ |
 | Frontend | http://localhost:5173          |
 | API      | http://localhost:8000          |
 | API Docs | http://localhost:8000/api/docs |
@@ -58,11 +58,11 @@ agrimarket/
 All secrets live in `.env` (never committed). See `.env.example` for all keys.
 
 Key variables:
-| Variable     | Description                              |
+| Variable | Description |
 |--------------|------------------------------------------|
-| `SECRET_KEY` | JWT signing key — generate with openssl  |
-| `MYSQL_*`    | Database credentials                     |
-| `VITE_API_URL` | Backend URL for frontend              |
+| `SECRET_KEY` | JWT signing key — generate with openssl |
+| `MYSQL_*` | Database credentials |
+| `VITE_API_URL` | Backend URL for frontend |
 
 ---
 
