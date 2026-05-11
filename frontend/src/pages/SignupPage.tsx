@@ -95,7 +95,7 @@ export default function SignupPage() {
                     : "text-gray-400 hover:text-green-700"
                 }`}
               >
-                {r === "farmer" ? "🌱 Farmer" : "Customer"}
+                {r === "farmer" ? "🌱 Farmer" : "🛍️ Customer"}
               </button>
             ))}
           </div>

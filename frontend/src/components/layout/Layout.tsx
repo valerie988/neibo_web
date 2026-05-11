@@ -119,7 +119,7 @@ export default function Layout() {
           <button onClick={() => setOpen(true)} className="text-green-700">
             <Menu size={24} />
           </button>
-          <span className="font-bold text-green-700">AgriMarket</span>
+          <span className="font-bold text-green-700">NeBo</span>
         </div>
         <main className="flex-1 overflow-y-auto p-4 lg:p-6">
           <Outlet />
