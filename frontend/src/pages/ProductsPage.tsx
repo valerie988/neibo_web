@@ -107,8 +107,9 @@ function CreateModal({
 
   // CLOUDINARY UPLOAD HANDLER
   const uploadToCloudinary = async (file: File) => {
-    const cloudName = "your_cloud_name"; // REPLACE WITH YOUR ACTUAL CLOUD NAME
-    const uploadPreset = "your_preset_name"; // REPLACE WITH YOUR ACTUAL PRESET NAME
+    // These lines now pull directly from your .env file
+    const cloudName = import.meta.env.VITE_CLOUDINARY_NAME;
+    const uploadPreset = import.meta.env.VITE_CLOUDINARY_PRESET;
 
     const formData = new FormData();
     formData.append("file", file);
@@ -122,7 +123,12 @@ function CreateModal({
       },
     );
 
-    if (!response.ok) throw new Error("Image upload failed");
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error("Cloudinary Error:", errorData);
+      throw new Error(errorData.error?.message || "Image upload failed");
+    }
+
     const data = await response.json();
     return data.secure_url;
   };
