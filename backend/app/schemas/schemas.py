@@ -1,13 +1,12 @@
+# app/schemas/schemas.py
 from pydantic import BaseModel, Field, field_validator
 from typing import Optional, List
 from datetime import datetime
 from enum import Enum
 
-
 class Role(str, Enum):
     farmer   = "farmer"
     customer = "customer"
-
 
 class OrderStatus(str, Enum):
     processing = "processing"
@@ -15,7 +14,6 @@ class OrderStatus(str, Enum):
     in_transit = "in_transit"
     delivered  = "delivered"
     cancelled  = "cancelled"
-
 
 # ── Auth ──────────────────────────────────────────────────────────────────────
 class SignupRequest(BaseModel):
@@ -33,12 +31,10 @@ class SignupRequest(BaseModel):
             raise ValueError("Location is required for farmers")
         return v
 
-
 class LoginRequest(BaseModel):
     email:    str
     password: str
     role:     Role
-
 
 class TokenResponse(BaseModel):
     access_token:  str
@@ -47,10 +43,8 @@ class TokenResponse(BaseModel):
     role:          Role
     user_id:       str
 
-
 class RefreshRequest(BaseModel):
     refresh_token: str
-
 
 # ── Users ─────────────────────────────────────────────────────────────────────
 class UserOut(BaseModel):
@@ -65,12 +59,10 @@ class UserOut(BaseModel):
     created_at:  datetime
     model_config = {"from_attributes": True}
 
-
 class UserUpdate(BaseModel):
     full_name: Optional[str] = None
     phone:     Optional[str] = None
     location:  Optional[str] = None
-
 
 # ── Products ──────────────────────────────────────────────────────────────────
 class ProductOut(BaseModel):
@@ -90,7 +82,6 @@ class ProductOut(BaseModel):
     farmer:      Optional[UserOut] = None
     model_config = {"from_attributes": True}
 
-
 class ProductUpdate(BaseModel):
     name:        Optional[str]   = None
     category:    Optional[str]   = None
@@ -102,17 +93,27 @@ class ProductUpdate(BaseModel):
     in_stock:    Optional[bool]  = None
 
 
+class ProductCreate(BaseModel):
+    name:        str
+    category:    str
+    description: Optional[str] = None
+    price:       float
+    unit:        str
+    quantity:    float
+    location:    str
+    photos:      List[str] # This receives the array of Cloudinary URLs
+    in_stock:    Optional[bool] = True
+
+    
 # ── Orders ────────────────────────────────────────────────────────────────────
 class OrderItemIn(BaseModel):
     product_id: str
     quantity:   float
 
-
 class OrderCreate(BaseModel):
     items:            List[OrderItemIn]
     delivery_address: Optional[str] = None
     notes:            Optional[str] = None
-
 
 class OrderItemOut(BaseModel):
     product_id: str
@@ -120,7 +121,6 @@ class OrderItemOut(BaseModel):
     unit_price: float
     product:    Optional[ProductOut] = None
     model_config = {"from_attributes": True}
-
 
 class OrderOut(BaseModel):
     id:               str
@@ -135,12 +135,14 @@ class OrderOut(BaseModel):
     customer:         Optional[UserOut]  = None
     model_config = {"from_attributes": True}
 
-
 class OrderStatusUpdate(BaseModel):
     status: OrderStatus
 
-
 # ── Chat ──────────────────────────────────────────────────────────────────────
+class MessageCreate(BaseModel):
+    receiver_id: str
+    text:        str
+
 class MessageOut(BaseModel):
     id:              str
     conversation_id: str
@@ -151,11 +153,13 @@ class MessageOut(BaseModel):
     created_at:      datetime
     model_config = {"from_attributes": True}
 
-
 class ConversationOut(BaseModel):
     id:              str
     participant_one: str
     participant_two: str
     updated_at:      datetime
     messages:        List[MessageOut] = []
+    other_name:      Optional[str]   = None   # resolved server-side
+    last_message:    Optional[str]   = None   # last message text
+    unread_count:    int             = 0      # unread count for current user
     model_config = {"from_attributes": True}

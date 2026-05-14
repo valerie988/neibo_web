@@ -25,7 +25,7 @@ export default function SignupPage() {
     try {
       await authApi.signup(form);
       await login(form.email, form.password, form.role);
-      toast.success("Welcome to NeBo! 🌱");
+      toast.success("Welcome to NeBo! ");
       navigate("/dashboard");
     } catch (err: any) {
       toast.error(err?.response?.data?.detail || "Signup failed.");
@@ -95,7 +95,7 @@ export default function SignupPage() {
                     : "text-gray-400 hover:text-green-700"
                 }`}
               >
-                {r === "farmer" ? "🌱 Farmer" : "🛍️ Customer"}
+                {r === "farmer" ? "Farmer" : "Customer"}
               </button>
             ))}
           </div>

@@ -6,7 +6,7 @@ from app.core.database import get_db
 from app.core.security import get_current_user, require_farmer
 from app.core.config import settings
 from app.models.models import User, Product
-from app.schemas.schemas import ProductOut, ProductUpdate
+from app.schemas.schemas import ProductOut, ProductUpdate, ProductCreate
 
 products_router = APIRouter(prefix="/products", tags=["products"])
 ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp"}
@@ -14,30 +14,16 @@ ALLOWED_TYPES = {"image/jpeg", "image/png", "image/webp"}
 
 @products_router.post("", response_model=ProductOut, status_code=201)
 async def create_product(
-    name: str = Form(...), category: str = Form(...), price: float = Form(...),
-    unit: str = Form(...), quantity: float = Form(...), location: str = Form(...),
-    description: Optional[str] = Form(None),
-    photos: List[UploadFile] = File(default=[]),
-    db: Session = Depends(get_db), current_user: User = Depends(require_farmer),
+    body: ProductCreate, # Now receiving JSON body
+    db: Session = Depends(get_db), 
+    current_user: User = Depends(require_farmer),
 ):
-    photo_urls = []
-    upload_dir = os.path.join(settings.UPLOAD_DIR, "products")
-    os.makedirs(upload_dir, exist_ok=True)
-    for photo in photos[:4]:
-        if photo.content_type not in ALLOWED_TYPES:
-            raise HTTPException(400, f"Invalid file type: {photo.content_type}")
-        import uuid
-        ext = (photo.filename or "file").split(".")[-1]
-        filename = f"{uuid.uuid4()}.{ext}"
-        path = os.path.join(upload_dir, filename)
-        with open(path, "wb") as f:
-            shutil.copyfileobj(photo.file, f)
-        photo_urls.append(f"{settings.APP_URL}/uploads/products/{filename}")
-
+    # The frontend already uploaded to Cloudinary and sent the URLs in body.photos
     product = Product(
-        farmer_id=current_user.id, name=name, category=category, price=price,
-        unit=unit, quantity=quantity, description=description, location=location, photos=photo_urls,
+        farmer_id=current_user.id,
+        **body.model_dump() # Unpack the validated JSON data
     )
+    
     db.add(product)
     db.commit()
     db.refresh(product)
@@ -84,11 +70,11 @@ def update_product(product_id: str, body: ProductUpdate, db: Session = Depends(g
     db.refresh(product)
     return product
 
-
 @products_router.delete("/{product_id}", status_code=204)
 def delete_product(product_id: str, db: Session = Depends(get_db), current_user: User = Depends(require_farmer)):
     product = db.query(Product).filter(Product.id == product_id, Product.farmer_id == current_user.id).first()
     if not product:
         raise HTTPException(404, "Product not found")
-    product.is_active = False
+    product.is_active = False # Soft delete
     db.commit()
+    return
