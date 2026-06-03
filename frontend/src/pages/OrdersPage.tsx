@@ -123,7 +123,7 @@ export default function OrdersPage() {
         </div>
       ) : filtered.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-4xl mb-3">📦</p>
+         
           <p className="font-semibold text-gray-500">No orders found</p>
         </div>
       ) : (

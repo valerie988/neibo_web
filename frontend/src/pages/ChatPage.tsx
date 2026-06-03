@@ -492,7 +492,7 @@ export default function ChatPage() {
               </div>
             ) : conversations.length === 0 ? (
               <div className="flex flex-col items-center justify-center h-full text-center p-6">
-                <p className="text-3xl mb-3">💬</p>
+                
                 <p className="text-sm font-semibold text-gray-600">
                   No conversations yet
                 </p>

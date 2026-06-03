@@ -62,7 +62,7 @@ export default function DashboardPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-2xl font-black text-green-900">
-          Good {new Date().getHours() < 12 ? "morning" : "afternoon"}, {user?.full_name?.split(" ")[0]} 👋
+          Good {new Date().getHours() < 12 ? "morning" : "afternoon"}, {user?.full_name?.split(" ")[0]} 
         </h1>
         <p className="text-gray-400 text-sm mt-1">Here's what's happening today</p>
       </div>

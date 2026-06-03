@@ -61,7 +61,7 @@ export default function RecommendPage() {
       <div className="flex items-center justify-between">
         <div>
           <div className="flex items-center gap-2">
-            <Sparkles size={22} className="text-green-700" />
+          
             <h1 className="text-2xl font-black text-green-900">For You</h1>
           </div>
           <p className="text-gray-400 text-sm mt-1">
@@ -90,7 +90,7 @@ export default function RecommendPage() {
         </div>
       ) : items.length === 0 ? (
         <div className="text-center py-20">
-          <p className="text-4xl mb-3">🌱</p>
+        
           <p className="font-bold text-green-900">Building your feed…</p>
           <p className="text-sm text-gray-400 mt-2 max-w-sm mx-auto">
             Browse a few products to help us learn your preferences.
